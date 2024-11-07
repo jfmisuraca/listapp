@@ -2,6 +2,7 @@ import { Text, View } from "react-native";
 import React, { useEffect } from "react";
 import * as SplashScreen from 'expo-splash-screen';
 import { material } from "react-native-typography";
+import styles from '../components/styles';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -15,13 +16,8 @@ export default function Index() {
   }, []);
   return (
     <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text style={material.headline}>Hola mundo!</Text>
+      style={styles.container}>
+      <Text style={material.headline}>Soy el index (listas)</Text>
     </View>
   );
 }
