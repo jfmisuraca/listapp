@@ -1,6 +1,7 @@
 import { Text, View } from "react-native";
 import React, { useEffect } from "react";
 import * as SplashScreen from 'expo-splash-screen';
+import { material } from "react-native-typography";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -20,7 +21,7 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text>Hola mundo!</Text>
+      <Text style={material.headline}>Hola mundo!</Text>
     </View>
   );
 }
