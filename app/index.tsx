@@ -1,6 +1,17 @@
 import { Text, View } from "react-native";
+import React, { useEffect } from "react";
+import * as SplashScreen from 'expo-splash-screen';
+
+SplashScreen.preventAutoHideAsync();
 
 export default function Index() {
+  useEffect(() => {
+    async function prepare() {
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      await SplashScreen.hideAsync();
+    }
+    prepare();
+  }, []);
   return (
     <View
       style={{
@@ -9,7 +20,7 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+      <Text>Hola mundo!</Text>
     </View>
   );
 }
