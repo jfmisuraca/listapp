@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { Text, View, Button } from "react-native";
 import React, { useEffect } from "react";
 import * as SplashScreen from 'expo-splash-screen';
 import { material } from "react-native-typography";
@@ -18,6 +18,7 @@ export default function Index() {
     <View
       style={styles.container}>
       <Text style={material.headline}>Soy el index (listas)</Text>
+      <Button title="Botón" onPress={() => alert('auch')} />
     </View>
   );
 }
