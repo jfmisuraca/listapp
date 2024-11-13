@@ -1,14 +1,19 @@
 import { Text, View, Button, TextInput } from "react-native";
 import React, { useEffect, useState } from "react";
 import * as SplashScreen from 'expo-splash-screen';
-import { material } from "react-native-typography";
+// import { material } from "react-native-typography";
 import styles from '../components/styles';
-import { Item } from "jstodotxt";
+// import { Item } from "jstodotxt";
 import * as FileSystem from 'expo-file-system';
 
 SplashScreen.preventAutoHideAsync();
 
 export default function Index() {
+  const [inputText, setInputText] = useState('');
+  const [messages, setMessages] = useState<string[]>([]);
+
+  const fileUri = `${FileSystem.documentDirectory}data.json`;
+
   useEffect(() => {
     async function prepare() {
       await new Promise(resolve => setTimeout(resolve, 2000));
@@ -16,10 +21,23 @@ export default function Index() {
     }
     prepare();
   }, []);
-  const [inputText, setInputText] = useState('');
-  const [messages, setMessages] = useState([]);
 
-  const fileUri = `${FileSystem.documentDirectory}data.json`;
+  const loadOrCreateMessages = async () => {
+    try {
+      // Verifica si el archivo existe
+      const fileInfo = await FileSystem.getInfoAsync(fileUri);
+      if (!fileInfo.exists) {
+        // Si no existe, crea el archivo con un array vacío como contenido inicial
+        await FileSystem.writeAsStringAsync(fileUri, JSON.stringify([]));
+        console.log("Archivo creado");
+      }
+
+      const fileContent = await FileSystem.readAsStringAsync(fileUri);
+      setMessages(JSON.parse(fileContent)); // Guarda el contenido en el estado de messages
+    } catch (error) {
+      console.error("Error al leer o crear el archivo:", error);
+    }
+  };
 
   const handleAddText = async () => {
     if (inputText.trim() === '') return;
@@ -33,18 +51,10 @@ export default function Index() {
       console.error('error al escribir en el archivo', error);
     }
   };
-  const loadMessages = async () => {
-    try {
-      const fileContent = await FileSystem.readAsStringAsync(fileUri);
-      setMessages(JSON.parse(fileContent));
-    } catch (error) {
-      console.error('Error al leer el archivo:', error);
-    }
-  };
 
   // Carga los mensajes cuando se monta el componente
-  React.useEffect(() => {
-    loadMessages();
+  useEffect(() => {
+    loadOrCreateMessages();
   }, []);
 
   return (
